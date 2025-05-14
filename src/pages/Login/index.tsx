@@ -1,16 +1,17 @@
 import { Button, Form, Input } from "antd";
-import { ILoginDTO, loginUser } from "../../services/authService";
-import toast from "react-hot-toast";
+import { ILoginDTO } from "../../services/authService";
+import { useLogin } from "../../hooks/authHooks";
 
 const Login = () => {
-  // create login form with email and password with antd and with form validation
   const [form] = Form.useForm();
+
+  const { mutateAsync, isPending } = useLogin();
 
   const onFinish = async (values: ILoginDTO) => {
     try {
-      const res = await loginUser(values);
+      const res = await mutateAsync(values);
 
-      console.log('res: ', res);
+      console.log("res: ", res);
     } catch (error) {
       console.error("error: ", error);
     }
@@ -34,7 +35,12 @@ const Login = () => {
           <Input.Password />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+            disabled={isPending}
+            loading={isPending}
+          >
             Login
           </Button>
         </Form.Item>

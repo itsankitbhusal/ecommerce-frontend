@@ -7,10 +7,11 @@ export interface ILoginDTO {
 }
 
 export const loginUser = async ({ email, password }: ILoginDTO) => {
-  return axios
-    .post<IAuthResponse>("/user/auth/sign-in", {
-      email,
-      password,
-    })
-    .then((d) => d.data);
+  const res = axios.post<IAuthResponse>("/user/auth/sign-in", {
+    email,
+    password,
+  });
+  const data = (await res).data;
+
+  return data;
 };
