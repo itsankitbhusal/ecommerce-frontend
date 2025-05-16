@@ -1,8 +1,8 @@
-import { Role } from "../constants";
+import { Roles } from "../constants";
 
 export interface IAuthResponse {
   token: string;
   refreshToken: string;
   userId: number;
-  roles: Role;
+  roles?: "ADMIN" | "USER"
 }
