@@ -1,6 +1,7 @@
-import { Layout, Menu } from "antd";
+import { Button, Layout, Menu, Popconfirm } from "antd";
 import {
   DashboardOutlined,
+  LogoutOutlined,
   TagsOutlined,
 } from "@ant-design/icons";
 import { Link, Outlet, useLocation } from "react-router-dom";
@@ -33,7 +34,24 @@ const AdminLayout = () => {
       </Sider>
 
       <Layout>
-        <Header className="bg-white shadow-md px-4">Admin Panel</Header>
+        <Header className="bg-white shadow-md px-4 py-2">
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl font-bold">Admin Panel</h1>
+            {/* popup confirm logout */}
+            <Popconfirm
+              title="Are you sure you want to logout?"
+              onConfirm={() => {
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+                window.location.href = "/auth/login";
+              }}
+            >
+              <Button type="primary" danger>
+                <LogoutOutlined />
+              </Button>
+            </Popconfirm>
+          </div>
+        </Header>
         <Content className="m-4 p-4 bg-white rounded shadow">
           <Outlet />
         </Content>
