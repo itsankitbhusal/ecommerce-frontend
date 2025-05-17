@@ -1,84 +1,19 @@
 import { useEffect, useState } from "react";
-import { Card, Col, Row, Input, Select, Spin, message, Button, Drawer, List } from "antd";
+import { Card, Col, Row, Input, Select, Spin, message, Button, Drawer, List, Typography } from "antd";
 import { useGetAllProducts } from "../../hooks/productHooks";
 import { useGetCategories } from "../../hooks/categoryHooks";
 import { useAddToCart, useGetCartByUserId, useRemoveFromCart, useUpdateCart } from "../../hooks/cartHooks";
 import { Link, useNavigate } from "react-router-dom";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { IProductPayload } from "../../services/productService";
-
+import AppHeader from "../../components/AppHeader";
+import CartDrawer from "../../components/CartDrawer";
 
 const { Search } = Input;
 const { Option } = Select;
 
 export const getProductImageUrl = (imageName: string) => {
   return `${import.meta.env.VITE_BASE_API_URL}/product/image/${imageName}`;
-};
-
-const CartDrawer = ({ open, onClose, userId }: { open: boolean; onClose: () => void; userId: number }) => {
-  const { data: cartItems = [], isLoading } = useGetCartByUserId(userId);
-  const { mutateAsync: updateCartItem } = useUpdateCart();
-  const { mutateAsync: removeCartItem } = useRemoveFromCart();
-
-
-  const handleCheckout = () => {
-    message.success("Checkout successful (placeholder)");
-    onClose();
-  };
-
-  const handleQuantityChange = async (cartId: string, newQty: number) => {
-    try {
-      await updateCartItem({ cartId, quantity: newQty });
-      message.success("Quantity updated");
-    } catch (err) {
-      message.error("Failed to update quantity");
-    }
-  };
-
-  const handleRemove = async (cartId: string) => {
-    try {
-      await removeCartItem(cartId);
-      message.success("Item removed from cart");
-    } catch (err) {
-      message.error("Failed to remove item");
-    }
-  };
-
-  return (
-    <Drawer title="Your Cart" onClose={onClose} open={open} width={360}>
-      {isLoading ? (
-        <Spin />
-      ) : cartItems?.length === 0 ? (
-        <p>Your cart is empty.</p>
-      ) : (
-        <>
-          <List
-            itemLayout="horizontal"
-            dataSource={cartItems}
-            renderItem={(item) => (
-              <List.Item
-                actions={[
-                  <Button onClick={() => handleQuantityChange(item.id, item.quantity - 1)} disabled={item.quantity <= 1}>-</Button>,
-                  <span>{item.quantity}</span>,
-                  <Button onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>+</Button>,
-                  <Button danger onClick={() => handleRemove(item.id)}>Remove</Button>,
-                ]}
-              >
-                <List.Item.Meta
-                  avatar={<img src={getProductImageUrl(item.imageName)} alt={item.name} style={{ width: 50 }} />}
-                  title={item.name}
-                  description={`Price: $${item.price}`}
-                />
-              </List.Item>
-            )}
-          />
-          <Button type="primary" block onClick={handleCheckout} className="mt-4">
-            Checkout
-          </Button>
-        </>
-      )}
-    </Drawer>
-  );
 };
 
 
@@ -139,8 +74,17 @@ const Home = () => {
   };
 
   return (
+    <>
+    
+      <div>
+
+      <AppHeader userId={userId} onOpenCart={() => setCartOpen(true)} />
+      </div>
     <div className="p-6">
-      <div className="mb-6 flex flex-wrap items-center gap-4 justify-between">
+        <div className="mb-6 flex flex-wrap items-center gap-4 justify-between">
+          <div>
+            <Typography.Title level={2}>Filter Products</Typography.Title>
+          </div>
         <div className="flex gap-4 flex-wrap">
           <Search
             placeholder="Search products"
@@ -161,9 +105,7 @@ const Home = () => {
             ))}
           </Select>
         </div>
-        <Button type="primary" icon={<ShoppingCartOutlined />} onClick={() => setCartOpen(true)}>
-          Cart
-        </Button>
+       
       </div>
 
       <Row gutter={[16, 16]}>
@@ -194,6 +136,7 @@ const Home = () => {
 
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} userId={userId} />
     </div>
+    </>
   );
 };
 
