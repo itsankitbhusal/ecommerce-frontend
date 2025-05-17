@@ -25,6 +25,9 @@ const AdminLayout = () => {
           <Menu.Item key="category" icon={<TagsOutlined />}>
             <Link to="/admin/category">Categories</Link>
           </Menu.Item>
+          <Menu.Item key="product" icon={<TagsOutlined />}>
+            <Link to="/admin/product">Products</Link>
+          </Menu.Item>
           {/* Add more menu items here */}
         </Menu>
       </Sider>

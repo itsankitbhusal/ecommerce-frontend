@@ -5,6 +5,7 @@ import Signup from "../pages/Signup";
 import AdminLayout from "../layouts/AdminLayout";
 import AdminDashboard from "../pages/AdminDashboard";
 import CategoryPage from "../pages/Category";
+import ProductPage from "../pages/ProductPage";
 
 const routes = [
   {
@@ -35,6 +36,10 @@ const routes = [
       {
         path: "category",
         element: <CategoryPage />,
+      },
+      {
+        path: "product",
+        element: <ProductPage categoryId={1} />,
       },
       // Add more admin routes here
     ],

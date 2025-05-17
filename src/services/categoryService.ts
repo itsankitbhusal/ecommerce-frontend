@@ -6,10 +6,10 @@ export interface ICategoryPayload {
 }
 
 // ⬇️ Constants
-const ADD_CATEGORY_URL = "/api/category/add";
-const UPDATE_CATEGORY_URL = "/api/category/update";
-const GET_CATEGORY_BY_STATUS_URL = "/api/category/getCategoryByStatus";
-const DELETE_CATEGORY_URL = "/api/category/delete";
+const ADD_CATEGORY_URL = "/category/add";
+const UPDATE_CATEGORY_URL = "/category/update";
+const GET_CATEGORY_BY_STATUS_URL = "/category/getCategoryByStatus";
+const DELETE_CATEGORY_URL = "/category/delete";
 
 export const addCategory = (data: ICategoryPayload) =>
   axios.post(ADD_CATEGORY_URL, data);

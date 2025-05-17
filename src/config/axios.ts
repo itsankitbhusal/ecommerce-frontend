@@ -30,7 +30,7 @@ axios.interceptors.request.use(
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
-    config.headers["Content-Type"] = "application/json";
+    // config.headers["Content-Type"] = "application/json";
     return config;
   },
   (error) => Promise.reject(error)
@@ -85,9 +85,9 @@ axios.interceptors.response.use(
     }
 
     if (error?.response?.status === 401) {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      window.location.href = "/";
+      // localStorage.removeItem("accessToken");
+      // localStorage.removeItem("refreshToken");
+      // window.location.href = "/";
     }
 
     return Promise.reject(error);
