@@ -1,28 +1,27 @@
 import { Button, Form, Input, message } from "antd";
 import { useState } from "react";
-import { useSignUp, useVerifyOTP } from "../../hooks/authHooks";
-import { ISignUpDTO } from "../../services/authService";
+import { useForgetPassword, useVerifyOTP } from "../../hooks/authHooks";
+import { ILoginDTO } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 
-const SignUp = () => {
+const ForgetPassword = () => {
   const [form] = Form.useForm();
   const [otpCode, setOtpCode] = useState("");
   const [isOtpStage, setIsOtpStage] = useState(false);
   const [email, setEmail] = useState("");
-
   const navigate = useNavigate();
 
-  const { mutateAsync: signUp, isPending } = useSignUp();
+  const { mutateAsync: forget, isPending } = useForgetPassword();
   const { mutateAsync: verifyOtp, isPending: isVerifying } = useVerifyOTP();
 
-  const handleSignUp = async (values: ISignUpDTO) => {
+  const handleForget = async (values: ILoginDTO) => {
     try {
-      await signUp(values);
-      message.success("OTP sent to your email.");
+      await forget(values);
+      message.success("OTP sent to email.");
       setEmail(values.email);
       setIsOtpStage(true);
-    } catch (err) {
-      message.error("Signup failed.");
+    } catch {
+      message.error("Error updating password.");
     }
   };
 
@@ -31,39 +30,26 @@ const SignUp = () => {
 
     try {
       await verifyOtp(otpCode);
-      message.success("Signup complete!");
-      navigate("/login");
+      message.success("Password updated.");
+      navigate("/");
     } catch {
-      message.error("Invalid OTP");
+      message.error("Invalid OTP.");
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4">
       {!isOtpStage ? (
-        <Form form={form} layout="vertical" onFinish={handleSignUp} className="w-full max-w-md">
-          <Form.Item name="firstname" label="First Name" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="lastname" label="Last Name" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
+        <Form form={form} layout="vertical" onFinish={handleForget} className="w-full max-w-md">
           <Form.Item name="email" label="Email" rules={[{ required: true, type: "email" }]}>
             <Input />
           </Form.Item>
-          <Form.Item name="password" label="Password" rules={[{ required: true }]}>
+          <Form.Item name="password" label="New Password" rules={[{ required: true }]}>
             <Input.Password />
           </Form.Item>
-          <Form.Item name="contactNumber" label="Contact Number" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="address" label="Address" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-
           <Form.Item>
             <Button type="primary" htmlType="submit" loading={isPending} block>
-              Sign Up
+              Request OTP
             </Button>
           </Form.Item>
         </Form>
@@ -84,4 +70,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default ForgetPassword;

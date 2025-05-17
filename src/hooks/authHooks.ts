@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { ILoginDTO, loginUser } from "../services/authService";
+import { forgetPassword, ILoginDTO, ISignUpDTO, loginUser, signUpUser, verifyOTP } from "../services/authService";
 
 export const useLogin = () => {
   return useMutation({
@@ -10,3 +10,18 @@ export const useLogin = () => {
     },
   });
 };
+
+export const useSignUp = () =>
+  useMutation({
+    mutationFn: (data: ISignUpDTO) => signUpUser(data),
+  });
+
+export const useVerifyOTP = () =>
+  useMutation({
+    mutationFn: (code: string) => verifyOTP(code),
+  });
+
+export const useForgetPassword = () =>
+  useMutation({
+    mutationFn: (data: ILoginDTO) => forgetPassword(data),
+  });
