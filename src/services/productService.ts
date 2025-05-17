@@ -67,6 +67,18 @@ export const getProductsByCategory = async ({
   return response.data;
 };
 
+
+export const getAllProducts = async ({
+  status,
+}: {
+  status: "ACTIVE" | "INACTIVE" | "DELETED";
+}) => {
+  const response = await axios.get(
+    `${BASE}/getAllProducts/${status}`
+  );
+  return response.data;
+};
+
 // GET /api/product/delete/:productId
 export const deleteProduct = async (productId: number) => {
   const response = await axios.get(`${BASE}/delete/${productId}`);

@@ -39,7 +39,7 @@ const routes = [
       },
       {
         path: "product",
-        element: <ProductPage categoryId={1} />,
+        element: <ProductPage />,
       },
       // Add more admin routes here
     ],

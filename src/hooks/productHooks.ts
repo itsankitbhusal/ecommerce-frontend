@@ -12,6 +12,7 @@ import {
     IProductFormData,
     getProductImage,
     PRODUCT_IMAGE_QUERY_KEY,
+    getAllProducts,
   } from "../services/productService";
   
   // 🟢 GET all products by category
@@ -22,6 +23,16 @@ import {
     return useQuery({
       queryKey: [PRODUCT_QUERY_KEY, categoryId, status],
       queryFn: () => getProductsByCategory({ categoryId, status }),
+    });
+  };
+
+  // get all products
+  export const useGetAllProducts = (
+    status: "ACTIVE" | "INACTIVE" | "DELETED"
+  ) => {
+    return useQuery({
+      queryKey: [PRODUCT_QUERY_KEY, status],
+      queryFn: () => getAllProducts({ status }),
     });
   };
   
