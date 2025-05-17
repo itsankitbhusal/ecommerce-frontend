@@ -13,6 +13,8 @@ export interface IProductPayload {
   categoryId: number;
   quantity: number;
   price: number;
+  productId: number;
+  imageName:string
 }
 
 export interface IProductFormData {
@@ -31,6 +33,13 @@ export const addProduct = async (payload: IProductFormData) => {
   const response = await axios.post(`${BASE}/add`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
+  return response.data;
+};
+
+export const productById = async (productId: number) => {
+  const response = await axios.get(
+    `${BASE}/getById/${productId}`
+  );
   return response.data;
 };
 
@@ -73,9 +82,11 @@ export const getAllProducts = async ({
 }: {
   status: "ACTIVE" | "INACTIVE" | "DELETED";
 }) => {
-  const response = await axios.get(
-    `${BASE}/getAllProducts/${status}`
-  );
+  // const response = await axios.get(
+  //   `${BASE}/getAllProducts/${status}`
+  // );
+  // /api/product/productForUnauthorized
+  const response = await axios.get(`${BASE}/productForUnauthorized`)
   return response.data;
 };
 

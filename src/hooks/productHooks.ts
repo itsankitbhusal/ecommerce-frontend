@@ -13,6 +13,7 @@ import {
     getProductImage,
     PRODUCT_IMAGE_QUERY_KEY,
     getAllProducts,
+    productById,
   } from "../services/productService";
   
   // 🟢 GET all products by category
@@ -77,5 +78,13 @@ export const useGetProductImage = () => {
   return useMutation({
     mutationFn: getProductImage,
     mutationKey: [PRODUCT_IMAGE_QUERY_KEY],
+  });
+};
+
+export const useGetProductById = (id: number) => {
+  return useQuery({
+    queryKey: ['product', id],
+    queryFn: () => productById(id),
+    enabled: !!id, // ensures query runs only when id is truthy
   });
 };

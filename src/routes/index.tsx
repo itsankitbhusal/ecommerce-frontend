@@ -6,11 +6,16 @@ import AdminLayout from "../layouts/AdminLayout";
 import AdminDashboard from "../pages/AdminDashboard";
 import CategoryPage from "../pages/Category";
 import ProductPage from "../pages/ProductPage";
+import ProductDetails from "../pages/ProductDetailPage";
 
 const routes = [
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/product/:id", // ✅ Product details route
+    element: <ProductDetails />,
   },
   {
     path: "/auth",

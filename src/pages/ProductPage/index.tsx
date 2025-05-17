@@ -19,7 +19,6 @@ import {
     useGetProductsByCategory,
     useUpdateProduct,
     useGetProductImage,
-    useGetAllProducts,
   } from "../../hooks/productHooks";
   import { UploadOutlined } from "@ant-design/icons";
   import { RcFile } from "antd/es/upload";
@@ -27,9 +26,9 @@ import {
   import { Status } from "../../constants";
   import { useGetCategories } from "../../hooks/categoryHooks";
   
-  const dummyUserId = 1; // Replace with auth context later
+  const dummyUserId = Number(localStorage.getItem("userId"));
   
-  const ProductPage = () => {
+  const ProductPage = ({ categoryId }: { categoryId: number }) => {
     const [form] = Form.useForm();
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<any>(null);
@@ -41,7 +40,8 @@ import {
     const [viewImageUrl, setViewImageUrl] = useState<string | null>(null);
   
     const { data: categories } = useGetCategories("ACTIVE");
-    const { data: products, isLoading } = useGetAllProducts(
+    const { data: products, isLoading } = useGetProductsByCategory(
+      categoryId,
       status
     );
     
@@ -146,12 +146,12 @@ import {
                   >
                     Edit
                   </Button>
-                  <Button onClick={() => handleViewImage(record?.imageName, record?.id)}>
+                  <Button onClick={() => handleViewImage(record.imageName, record.id)}>
                     View Image
                   </Button>
                   <Popconfirm
                     title="Are you sure to delete this product?"
-                    onConfirm={() => handleDelete(record?.id)}
+                    onConfirm={() => handleDelete(record.id)}
                   >
                     <Button danger>Delete</Button>
                   </Popconfirm>

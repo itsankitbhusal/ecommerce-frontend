@@ -16,13 +16,11 @@ export interface ISignUpDTO {
 }
 
 export const loginUser = async ({ email, password }: ILoginDTO) => {
-  const res = axios.post<IAuthResponse>("/user/auth/sign-in", {
+  const res = await axios.post<IAuthResponse>("/user/auth/sign-in", {
     email,
     password,
   });
-  const data = (await res).data;
-
-  return data;
+  return res.data;
 };
 
 export const signUpUser = async (data: ISignUpDTO) => {

@@ -26,7 +26,9 @@ const Login = () => {
       const res = await mutateAsync(values);
       localStorage.setItem("accessToken", res.token);
       localStorage.setItem("refreshToken", res.refreshToken);
+      localStorage.setItem("userId", res.userId.toString());
       const userRole = res.roles;
+
       navigate(userRole === Roles.ADMIN ? "/admin" : "/");
     } catch {
       message.error("Invalid credentials");
