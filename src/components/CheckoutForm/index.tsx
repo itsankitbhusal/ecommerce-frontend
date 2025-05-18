@@ -9,7 +9,7 @@ import {
   
   interface CheckoutFormProps {
     cartItems: any[];
-    onPaymentSuccess: () => void;
+    onPaymentSuccess: (paymentMethod: any) => void;
   }
   
   const CARD_ELEMENT_OPTIONS = {
@@ -91,7 +91,7 @@ import {
         
         // In a client-side only demo, we simulate a successful API call
         setTimeout(() => {
-          onPaymentSuccess();
+          onPaymentSuccess(paymentMethod);
           setLoading(false);
         }, 1000);
         

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Drawer, List, Button, message, Select, Spin, Badge, Avatar, Typography, Divider } from "antd";
 import { DeleteOutlined, MinusOutlined, PlusOutlined, ShoppingCartOutlined } from "@ant-design/icons";
-import { useGetCartByUserId, useRemoveFromCart, useUpdateCart } from "../../hooks/cartHooks";
+import { useCheckout, useGetCartByUserId, useRemoveFromCart, useUpdateCart } from "../../hooks/cartHooks";
 import Checkout from "../Checkout";
+import { ICheckoutItem } from "../../services/cartService";
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -17,7 +18,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose, userId }) => {
   const { data: cartItems = [], isLoading } = useGetCartByUserId(userId);
   const { mutateAsync: updateCartItem } = useUpdateCart();
   const { mutateAsync: removeCartItem } = useRemoveFromCart();
-
+  const { mutateAsync: checkout } = useCheckout();
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "stripe">("cod");
   const [showStripeCheckout, setShowStripeCheckout] = useState(false);
 
@@ -50,13 +51,28 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose, userId }) => {
     }
   };
 
-  const handlePaymentSuccess = () => {
-    message.success("Payment successful! Order placed.");
-    setShowStripeCheckout(false);
-    onClose();
-    // In a real app, you would call your backend order API here
+  const handlePaymentSuccess = async (paymentMethod: any) => {
+    const paymentDetail = JSON.stringify(paymentMethod);
 
-    
+    console.log('paymentMethod', paymentMethod, "paymentDetail", paymentDetail);
+  
+    const checkoutData: ICheckoutItem[] = cartItems.map(item => ({
+      userId: item.userId,
+      name: item.name,
+      quantity: item.quantity,
+      imageName: item.imageName,
+      price: item.price,
+      productId: item.productId,
+      paymentDetail,
+    }));
+
+    try {
+      await checkout(checkoutData);
+      message.success("Payment successful! Order placed.");
+      onClose();
+    } catch (err) {
+      message.error("Checkout failed");
+    }
   };
 
   const handleCheckout = () => {

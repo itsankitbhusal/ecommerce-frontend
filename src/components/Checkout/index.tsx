@@ -11,23 +11,23 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY!);
 
 interface CheckoutProps {
   cartItems: any[];
-  onPaymentSuccess?: () => void;
+  onPaymentSuccess?: (paymentMethod: any) => void;  
 }
 
 const Checkout: React.FC<CheckoutProps> = ({ cartItems, onPaymentSuccess }) => {
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const navigate = useNavigate();
 
-  const handlePaymentSuccess = () => {
+  const handlePaymentSuccess = (paymentMethod: any) => {
     setPaymentCompleted(true);
     // Call the parent callback if provided
     if (onPaymentSuccess) {
-      onPaymentSuccess();
+      onPaymentSuccess(paymentMethod);
     }
   };
 
   const goToHome = () => {
-    navigate("/");
+    window.location.href = "/";
   };
 
   // Define appearance options for Stripe Elements

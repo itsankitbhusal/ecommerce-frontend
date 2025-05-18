@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { addToCart, getCartItems, ICartRequestDto, removeCartItem, updateCart } from '../services/cartService';
+import { addToCart, checkoutCart, getCartItems, ICartRequestDto, ICheckoutItem, removeCartItem, updateCart } from '../services/cartService';
 
 const GET_CART = "get_cart";
 
@@ -22,9 +22,16 @@ export const useGetCartByUserId = (userId:number) => {
   })
 }
 
-export const useCheckout = ()=>{
-  
-}
+export const useCheckout = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (checkoutData: ICheckoutItem[]) => checkoutCart(checkoutData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [GET_CART]});
+    }
+  });
+};
 
 export const useUpdateCart = () => {
   const queryClient = useQueryClient();
@@ -33,7 +40,7 @@ export const useUpdateCart = () => {
     mutationFn: ({ cartId, quantity }: { cartId: string; quantity: number }) =>
       updateCart(cartId, quantity),
     onSuccess: (_data, _vars, _context) => {
-      queryClient.invalidateQueries(); // or specifically [GET_CART, userId] if available
+      queryClient.invalidateQueries({ queryKey: [GET_CART]});
     },
   });
 };
