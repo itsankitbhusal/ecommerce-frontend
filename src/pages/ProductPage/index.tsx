@@ -11,37 +11,35 @@ import {
     message,
     Popconfirm,
     Modal,
+    Image,
   } from "antd";
   import { useEffect, useState } from "react";
   import {
     useAddProduct,
     useDeleteProduct,
-    useGetProductsByCategory,
     useUpdateProduct,
     useGetProductImage,
+    useGetAllProducts,
   } from "../../hooks/productHooks";
   import { UploadOutlined } from "@ant-design/icons";
   import { RcFile } from "antd/es/upload";
   import { IProductPayload } from "../../services/productService";
   import { Status } from "../../constants";
   import { useGetCategories } from "../../hooks/categoryHooks";
+import { getProductImageUrl } from "../Home";
   
   const dummyUserId = Number(localStorage.getItem("userId"));
   
-  const ProductPage = ({ categoryId }: { categoryId: number }) => {
+  const ProductPage = () => {
     const [form] = Form.useForm();
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<any>(null);
     const [imageFile, setImageFile] = useState<RcFile | null>(null);
     const [status, setStatus] = useState<"ACTIVE" | "INACTIVE" | "DELETED">(
       "ACTIVE"
-    );
-    const [viewImageId, setViewImageId] = useState<number | null>(null);
-    const [viewImageUrl, setViewImageUrl] = useState<string | null>(null);
-  
+    );  
     const { data: categories } = useGetCategories("ACTIVE");
-    const { data: products, isLoading } = useGetProductsByCategory(
-      categoryId,
+    const { data: products, isLoading } = useGetAllProducts(
       status
     );
     
@@ -106,17 +104,16 @@ import {
         message.error("Delete failed.");
       }
     };
-  
-    const handleViewImage = async (productName: string, productId: number) => {
+
+    const handleViewImage = async (imageName: string) => {
       try {
-        const url = await fetchImage(productName);
+        const url = await fetchImage(imageName);
         setViewImageUrl(url);
-        setViewImageId(productId);
       } catch {
         message.error("Failed to fetch image.");
       }
     };
-  
+
     return (
       <div className="p-4">
         <Space style={{ marginBottom: 16 }}>
@@ -135,6 +132,19 @@ import {
             { title: "Quantity", dataIndex: "quantity" },
             { title: "Price", dataIndex: "price" },
             {
+              title: "Image",
+              dataIndex: "imageName",
+              render: (imageName: string) => (
+                <Image
+                  width={40}
+                  height={40}
+                  src={getProductImageUrl(imageName) || ''}
+                  preview={true} // Enables click-to-preview modal with zoom
+                  style={{ objectFit: 'cover', borderRadius: 4 }}
+                />
+              )
+            },
+            {
               title: "Action",
               render: (_, record) => (
                 <Space>
@@ -145,9 +155,6 @@ import {
                     }}
                   >
                     Edit
-                  </Button>
-                  <Button onClick={() => handleViewImage(record.imageName, record.id)}>
-                    View Image
                   </Button>
                   <Popconfirm
                     title="Are you sure to delete this product?"
@@ -230,22 +237,6 @@ import {
             </Button>
           </Form>
         </Drawer>
-  
-        <Modal
-          open={!!viewImageId}
-          title="Product Image"
-          footer={null}
-          onCancel={() => {
-            setViewImageId(null);
-            setViewImageUrl(null);
-          }}
-        >
-          {viewImageUrl ? (
-            <img src={viewImageUrl} alt="Product" style={{ width: "100%" }} />
-          ) : (
-            <p>Loading...</p>
-          )}
-        </Modal>
       </div>
     );
   };

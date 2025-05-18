@@ -7,29 +7,44 @@ import AdminDashboard from "../pages/AdminDashboard";
 import CategoryPage from "../pages/Category";
 import ProductPage from "../pages/ProductPage";
 import ProductDetails from "../pages/ProductDetailPage";
+import UserOrders from "../components/UserOrders";
+import AppHeader from "../components/AppHeader";
+import AdminOrders from "../components/AdminOrders";
 
 const routes = [
   {
     path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/product/:id", // ✅ Product details route
-    element: <ProductDetails />,
-  },
-  {
-    path: "/auth",
+    element: <AppHeader />,
     children: [
       {
-        path: "login",
-        element: <Login />,
+        path: "",
+        element: <Home />,
       },
       {
-        path: "signup",
-        element: <Signup />,
+        path: "/product/:id",
+        element: <ProductDetails />,
+      },
+      {
+        path: "/orders",
+        element: <UserOrders />,
+      },
+      {
+        path: "/auth",
+        children: [
+          {
+            path: "login",
+            element: <Login />,
+          },
+          {
+            path: "signup",
+            element: <Signup />,
+          },
+        ],
       },
     ],
   },
+ 
+ 
   {
     path: "/admin",
     element: <AdminLayout />,
@@ -46,7 +61,10 @@ const routes = [
         path: "product",
         element: <ProductPage />,
       },
-      // Add more admin routes here
+      {
+        path: "orders",
+        element: <AdminOrders />,
+      },
     ],
   },
   {

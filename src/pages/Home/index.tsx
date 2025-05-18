@@ -75,11 +75,6 @@ const Home = () => {
 
   return (
     <>
-    
-      <div>
-
-      <AppHeader userId={userId} onOpenCart={() => setCartOpen(true)} />
-      </div>
     <div className="p-6">
         <div className="mb-6 flex flex-wrap items-center gap-4 justify-between">
           <div>
@@ -103,9 +98,14 @@ const Home = () => {
                 {cat.categoryTitle}
               </Option>
             ))}
-          </Select>
+            </Select>
+            
+            {userId ? (
+            <Button type="primary" icon={<ShoppingCartOutlined />} onClick={() => setCartOpen(true)}>
+          Cart  
+        </Button>          
+        ): null}
         </div>
-       
       </div>
 
       <Row gutter={[16, 16]}>
@@ -127,7 +127,9 @@ const Home = () => {
                   description={`Price: $${product.price.toFixed(2)}`}
                 />
                 </Link>
+                {userId ? (
                 <Button type="primary" icon={<ShoppingCartOutlined />} onClick={()=>handleAddToCart(product)}></Button>
+                ): null}
               </div>
             </Card>
           </Col>

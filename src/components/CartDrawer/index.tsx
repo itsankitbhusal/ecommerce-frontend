@@ -53,15 +53,13 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose, userId }) => {
 
   const handlePaymentSuccess = async (paymentMethod: any) => {
     const paymentDetail = JSON.stringify(paymentMethod);
-
-    console.log('paymentMethod', paymentMethod, "paymentDetail", paymentDetail);
   
     const checkoutData: ICheckoutItem[] = cartItems.map(item => ({
       userId: item.userId,
-      name: item.name,
+      productName: item.name,
       quantity: item.quantity,
       imageName: item.imageName,
-      price: item.price,
+      amount: item.price * item.quantity,
       productId: item.productId,
       paymentDetail,
     }));
@@ -75,11 +73,29 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose, userId }) => {
     }
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (paymentMethod === "stripe") {
       setShowStripeCheckout(true);
     } else {
-      // COD selected - Show success and close cart
+      const checkoutData: ICheckoutItem[] = cartItems.map(item => ({
+      userId: item.userId,
+      productName: item.name,
+      quantity: item.quantity,
+      imageName: item.imageName,
+      amount: item.price * item.quantity,
+      productId: item.productId,
+      paymentDetail: "COD"
+    }));
+      
+      
+    try {
+      await checkout(checkoutData);
+      message.success("Payment successful! Order placed.");
+      onClose();
+    } catch (err) {
+      message.error("Checkout failed");
+      }
+      
       message.success("Order placed successfully with Cash on Delivery.");
       onClose();
       // In a real app, you would call your backend order API here for COD order
