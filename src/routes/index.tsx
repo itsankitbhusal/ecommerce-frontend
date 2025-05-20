@@ -10,6 +10,7 @@ import ProductDetails from "../pages/ProductDetailPage";
 import UserOrders from "../components/UserOrders";
 import AppHeader from "../components/AppHeader";
 import AdminOrders from "../components/AdminOrders";
+import UserList from "../components/UserList";
 
 const routes = [
   {
@@ -64,6 +65,10 @@ const routes = [
       {
         path: "orders",
         element: <AdminOrders />,
+      },
+      {
+        path: "users",
+        element: <UserList />,
       },
     ],
   },

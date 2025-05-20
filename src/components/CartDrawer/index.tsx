@@ -56,7 +56,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose, userId }) => {
   
     const checkoutData: ICheckoutItem[] = cartItems.map(item => ({
       userId: item.userId,
-      productName: item.name,
+      name: item.name,
       quantity: item.quantity,
       imageName: item.imageName,
       amount: item.price * item.quantity,
@@ -79,7 +79,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose, userId }) => {
     } else {
       const checkoutData: ICheckoutItem[] = cartItems.map(item => ({
       userId: item.userId,
-      productName: item.name,
+      name: item.name,
       quantity: item.quantity,
       imageName: item.imageName,
       amount: item.price * item.quantity,

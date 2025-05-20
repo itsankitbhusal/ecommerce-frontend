@@ -32,7 +32,7 @@ const SignUp = () => {
     try {
       await verifyOtp(otpCode);
       message.success("Signup complete!");
-      navigate("/login");
+      navigate("/auth/login");
     } catch {
       message.error("Invalid OTP");
     }

@@ -29,10 +29,9 @@ const AdminLayout = () => {
           <Menu.Item key="product" icon={<TagsOutlined />}>
             <Link to="/admin/product">Products</Link>
           </Menu.Item>
-          <Menu.Item key="orders" icon={<TagsOutlined />}>
-            <Link to="/admin/orders">Orders</Link>
+          <Menu.Item key="users" icon={<TagsOutlined />}>
+            <Link to="/admin/users">Users</Link>
           </Menu.Item>
-          {/* Add more menu items here */}
         </Menu>
       </Sider>
 
@@ -46,7 +45,6 @@ const AdminLayout = () => {
               onConfirm={() => {
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("refreshToken");
-                localStorage.removeItem("userId");
                 window.location.href = "/auth/login";
               }}
             >

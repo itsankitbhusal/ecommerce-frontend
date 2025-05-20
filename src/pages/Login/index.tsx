@@ -1,7 +1,7 @@
 import { Button, Form, Input, Modal, message } from "antd";
 import { ILoginDTO } from "../../services/authService";
 import { useForgetPassword, useLogin, useVerifyOTP } from "../../hooks/authHooks";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Roles } from "../../constants";
 import { useState } from "react";
 
@@ -97,6 +97,9 @@ const Login = () => {
             <Button type="link" onClick={handleVerifyOtpClick}>
               Verify OTP
             </Button>
+            <Link to="/auth/signup">
+              <Button type="link">Sign Up</Button>
+            </Link>
           </div>
         </Form.Item>
       </Form>

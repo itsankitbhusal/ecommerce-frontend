@@ -14,6 +14,7 @@ import {
     PRODUCT_IMAGE_QUERY_KEY,
     getAllProducts,
     productById,
+    productStats,
   } from "../services/productService";
   
   // 🟢 GET all products by category
@@ -88,3 +89,11 @@ export const useGetProductById = (id: number) => {
     enabled: !!id, // ensures query runs only when id is truthy
   });
 };
+
+// productStats
+export const useGetProductStats = () => {
+  return useQuery({
+    queryKey: ['product_stats'],
+    queryFn: () => productStats(),
+  });
+}

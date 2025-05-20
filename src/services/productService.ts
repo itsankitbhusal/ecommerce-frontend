@@ -105,3 +105,8 @@ export const getProductImage = async (productName: string): Promise<string> => {
   const imageUrl = URL.createObjectURL(response.data);
   return imageUrl;
 };
+
+export const productStats = async () => {
+  const response = await axios.get(`${BASE}/product/data`);
+  return response.data;
+};
