@@ -32,6 +32,9 @@ const AdminLayout = () => {
           <Menu.Item key="users" icon={<TagsOutlined />}>
             <Link to="/admin/users">Users</Link>
           </Menu.Item>
+          <Menu.Item key="orders" icon={<TagsOutlined />}>
+            <Link to="/admin/orders">Orders</Link>
+          </Menu.Item>
         </Menu>
       </Sider>
 
